@@ -14,7 +14,7 @@ app.use(express.json());
 connectDB();
 
 // 🔥 Routes
-app.use("/api/tasks", require("./routes/taskroutes"));
+app.use("/api/tasks", require("./routes/taskRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/auth", require("./routes/authRoutes"));
 
