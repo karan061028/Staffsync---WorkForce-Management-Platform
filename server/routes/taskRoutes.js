@@ -9,7 +9,7 @@ const {
   getTasks,
   editTask,
   deleteTask,
-} = require("../controllers/taskController");
+} = require("../controllers/taskcontroller");
 
 // 👑 ADMIN
 router.post("/create", protect, adminOnly, createTask);
