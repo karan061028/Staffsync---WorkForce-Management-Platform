@@ -11,40 +11,69 @@ const Login = ({ onLogin }) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!email || !password) {
-      setError("All fields are required");
+  setLoading(true);
+  setError("");
+
+  try {
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/auth/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+          password: password.trim(),
+        }),
+      }
+    );
+
+    // 🔥 SAFE PARSE
+    let data;
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error("Invalid server response");
+    }
+
+    console.log("LOGIN RESPONSE:", data); // 🔥 DEBUG
+
+    // 🔥 HANDLE ERROR
+    if (!res.ok) {
+      setError(data?.message || "Login failed");
+      setLoading(false);
       return;
     }
 
-    setError("");
-    setLoading(true);
+    // 🔥 VALIDATE RESPONSE
+    if (!data || !data.token || !data.user) {
+      setError("Invalid response from server");
+      setLoading(false);
+      return;
+    }
 
-    try {
-      // 🔥 LOGIN API
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/auth/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: email.trim(),
-            password: password.trim(),
-          }),
-        }
-      );
+    // ✅ SAVE TOKEN
+    localStorage.setItem("token", data.token);
 
-      const data = await res.json();
+    // ✅ SAVE USER
+    localStorage.setItem("user", JSON.stringify(data.user));
 
-      if (!res.ok) {
-        setError(data.message || "Login failed");
-        setLoading(false);
-        return;
-      }
+    setCurrentUser(data.user);
+
+    setLoading(false);
+
+    onLogin && onLogin();
+
+  } catch (err) {
+    console.error("Login error:", err);
+    setError("Server error");
+    setLoading(false);
+  }
+};
 
       // 🔥 SAVE TOKEN
       localStorage.setItem("token", data.token);
