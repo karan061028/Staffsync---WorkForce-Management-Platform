@@ -9,35 +9,45 @@ const EmployeeDashboard = (props) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token");
 
+  // 🔥 FETCH TASKS (FIXED)
   const fetchTasks = async () => {
-   const res = await fetch(
-  `${import.meta.env.VITE_API_URL}/api/tasks/${user._id}`,
-  {
-    headers: {
-      Authorization: token,
-    },
-  }
-);
+    try {
+      if (!user?._id) return;
+
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/tasks/${user._id}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
       const data = await res.json();
       setTasks(data);
+
     } catch (err) {
-      console.log(err);
+      console.log("Error fetching tasks:", err);
     }
   };
 
+  // 🔥 AUTO REFRESH
   useEffect(() => {
     fetchTasks();
+
     const interval = setInterval(fetchTasks, 5000);
     return () => clearInterval(interval);
   }, []);
 
+  // 🔥 TASK COUNTS
   const taskCounts = {
-    newTask: tasks.filter(t => t.status === "new").length,
-    completed: tasks.filter(t => t.status === "completed").length,
-    active: tasks.filter(t => t.status === "active").length,
-    failed: tasks.filter(t => t.status === "failed").length,
+    newTask: tasks.filter((t) => t.status === "new").length,
+    completed: tasks.filter((t) => t.status === "completed").length,
+    active: tasks.filter((t) => t.status === "active").length,
+    failed: tasks.filter((t) => t.status === "failed").length,
   };
 
+  // 🔥 FINAL DATA
   const updatedData = {
     ...props.data,
     tasks,
@@ -71,8 +81,8 @@ const EmployeeDashboard = (props) => {
             <h2 className="text-lg font-semibold">📋 Your Tasks</h2>
           </div>
 
-          {/* TASK LIST (SCROLL INSIDE) */}
-          <div className="flex-1 min-h-0">
+          {/* TASK LIST (SCROLL FIXED) */}
+          <div className="flex-1 min-h-0 overflow-hidden">
             <TaskList data={updatedData} />
           </div>
 

@@ -22,41 +22,36 @@ const Login = ({ onLogin }) => {
     setError("");
     setLoading(true);
 
+    try {
       // 🔥 LOGIN API
-try {
-  const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/auth/login`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    }
-  );
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email.trim(),
+            password: password.trim(),
+          }),
+        }
+      );
 
-  const data = await res.json();
+      const data = await res.json();
 
-  // 🔥 IMPORTANT FIX
-  if (!res.ok) {
-    alert(data.message || "Login failed");
-    return;
-  }
+      if (!res.ok) {
+        setError(data.message || "Login failed");
+        setLoading(false);
+        return;
+      }
 
-  // ✅ success
-  console.log("Login success:", data);
-
-} catch (err) {
-  console.error(err);
-  alert("Network error");
-}
-
-      // 🔥 Save token
+      // 🔥 SAVE TOKEN
       localStorage.setItem("token", data.token);
 
-      // 🔥 FETCH TASKS FROM BACKEND
+      // 🔥 FETCH TASKS (FIXED FOR MOBILE)
       const taskRes = await fetch(
-        `http://localhost:5000/api/tasks/${data.user._id}`,
+        `${import.meta.env.VITE_API_URL}/api/tasks/${data.user._id}`,
         {
           headers: {
             Authorization: data.token,
@@ -66,22 +61,23 @@ try {
 
       const tasks = await taskRes.json();
 
-      // 🔥 Combine user + tasks
+      // 🔥 COMBINE USER + TASKS
       const fullUser = {
         ...data.user,
         tasks,
       };
 
-      // 🔥 Save user
+      // 🔥 SAVE USER
       setCurrentUser(fullUser);
       localStorage.setItem("user", JSON.stringify(fullUser));
 
       setLoading(false);
 
-      // 🔥 Trigger login success
+      // 🔥 LOGIN SUCCESS
       onLogin && onLogin();
 
-    } catch (error) {
+    } catch (err) {
+      console.error(err);
       setError("Server error");
       setLoading(false);
     }
@@ -89,16 +85,13 @@ try {
 
   return (
     <div className="w-full flex items-center justify-center">
-
-      {/* 🔥 LOGIN CARD */}
       <div
         className="w-[420px] p-10 rounded-3xl 
         bg-white/5 backdrop-blur-2xl 
         border border-white/10 
         shadow-[0_10px_40px_rgba(0,0,0,0.6)]"
       >
-
-        {/* 🔥 LOGO */}
+        {/* LOGO */}
         <div className="flex flex-col items-center mb-8">
           <div className="relative flex items-center justify-center">
             <div className="absolute w-40 h-40 bg-blue-500/20 blur-3xl rounded-full animate-pulse"></div>
@@ -116,15 +109,15 @@ try {
           </p>
         </div>
 
-        {/* Heading */}
+        {/* HEADING */}
         <h2 className="text-xl font-semibold text-white text-center mb-5">
           Sign in to your account
         </h2>
 
-        {/* Form */}
+        {/* FORM */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-
-          {/* Email */}
+          
+          {/* EMAIL */}
           <input
             type="email"
             placeholder="Email address"
@@ -136,7 +129,7 @@ try {
             focus:ring-2 focus:ring-blue-500/50 transition"
           />
 
-          {/* Password */}
+          {/* PASSWORD */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -158,12 +151,12 @@ try {
             </span>
           </div>
 
-          {/* Error */}
+          {/* ERROR */}
           {error && (
             <p className="text-red-400 text-sm">{error}</p>
           )}
 
-          {/* Button */}
+          {/* BUTTON */}
           <button
             type="submit"
             disabled={loading}
@@ -185,7 +178,7 @@ try {
           </button>
         </form>
 
-        {/* Footer */}
+        {/* FOOTER */}
         <p className="text-gray-400 text-sm text-center mt-6">
           Forgot your password?{" "}
           <span className="text-blue-400 cursor-pointer hover:underline">
