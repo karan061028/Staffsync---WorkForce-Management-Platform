@@ -10,13 +10,14 @@ const EmployeeDashboard = (props) => {
   const token = localStorage.getItem("token");
 
   const fetchTasks = async () => {
-    try {
-      const res = await fetch(
-        `http://localhost:5000/api/tasks/${user._id}`,
-        {
-          headers: { Authorization: token },
-        }
-      );
+   const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/tasks/${user._id}`,
+  {
+    headers: {
+      Authorization: token,
+    },
+  }
+);
       const data = await res.json();
       setTasks(data);
     } catch (err) {

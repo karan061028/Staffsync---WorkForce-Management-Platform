@@ -22,7 +22,7 @@ const AdminDashboard = ({ changeUser }) => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/users", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/tasks`, {
           headers: { Authorization: token },
         });
 

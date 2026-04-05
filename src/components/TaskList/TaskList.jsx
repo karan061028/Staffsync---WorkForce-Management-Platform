@@ -22,7 +22,7 @@ const TaskList = ({ data }) => {
 
 const updateTaskStatus = async (taskId, status) => {
   try {
-    const res = await fetch("http://localhost:5000/api/tasks/update", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/tasks/update`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
