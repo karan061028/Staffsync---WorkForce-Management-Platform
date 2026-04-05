@@ -23,7 +23,7 @@ const Login = ({ onLogin }) => {
     setLoading(true);
 
       // 🔥 LOGIN API
-      try {
+try {
   const res = await fetch(
     `${import.meta.env.VITE_API_URL}/api/auth/login`,
     {
@@ -34,13 +34,22 @@ const Login = ({ onLogin }) => {
       body: JSON.stringify({ email, password }),
     }
   );
-      const data = await res.json();
 
-      if (!res.ok) {
-        setError(data.message || "Invalid credentials ❌");
-        setLoading(false);
-        return;
-      }
+  const data = await res.json();
+
+  // 🔥 IMPORTANT FIX
+  if (!res.ok) {
+    alert(data.message || "Login failed");
+    return;
+  }
+
+  // ✅ success
+  console.log("Login success:", data);
+
+} catch (err) {
+  console.error(err);
+  alert("Network error");
+}
 
       // 🔥 Save token
       localStorage.setItem("token", data.token);
