@@ -22,16 +22,18 @@ const Login = ({ onLogin }) => {
     setError("");
     setLoading(true);
 
-    try {
       // 🔥 LOGIN API
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/tasks`){
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
+      try {
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/api/auth/login`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    }
+  );
       const data = await res.json();
 
       if (!res.ok) {
