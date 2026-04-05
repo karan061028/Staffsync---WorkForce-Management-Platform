@@ -14,9 +14,11 @@ app.use(express.json());
 connectDB();
 
 // 🔥 Routes
-app.use("/api/tasks", require("./routes/taskRoutes"));
-app.use("/api/users", require("./routes/userRoutes"));
-app.use("/api/auth", require("./routes/authRoutes"));
+const path = require("path");
+
+app.use("/api/tasks", require(path.join(__dirname, "routes", "taskRoutes")));
+app.use("/api/users", require(path.join(__dirname, "routes", "userRoutes")));
+app.use("/api/auth", require(path.join(__dirname, "routes", "authRoutes")));
 
 // 🔥 Test route
 app.get("/", (req, res) => {
