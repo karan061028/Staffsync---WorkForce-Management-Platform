@@ -3,26 +3,29 @@ const cors = require("cors");
 require("dotenv").config();
 
 const connectDB = require("./config/db");
-const { hasReducedMotionListener } = require("framer-motion");
 
 const app = express();
 
+// 🔥 Middleware
 app.use(cors());
 app.use(express.json());
-app.use("/api/tasks", require("./routes/taskRoutes"));
-app.use("/api/users", require("./routes/userRoutes"));
+
 // 🔥 Connect DB
 connectDB();
 
-// Routes
+// 🔥 Routes
+app.use("/api/tasks", require("./routes/taskRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/auth", require("./routes/authRoutes"));
 
-// Test route
+// 🔥 Test route
 app.get("/", (req, res) => {
   res.send("API Running 🚀");
 });
 
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
-});
+// ✅ FIXED PORT (IMPORTANT)
+const PORT = process.env.PORT || 5000;
 
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
