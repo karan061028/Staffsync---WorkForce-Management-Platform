@@ -75,42 +75,42 @@ const handleSubmit = async (e) => {
   }
 };
 
-      // 🔥 SAVE TOKEN
-      localStorage.setItem("token", data.token);
+  //     // 🔥 SAVE TOKEN
+  //     localStorage.setItem("token", data.token);
 
-      // 🔥 FETCH TASKS (FIXED FOR MOBILE)
-      const taskRes = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/tasks/${data.user._id}`,
-        {
-          headers: {
-            Authorization: data.token,
-          },
-        }
-      );
+  //     // 🔥 FETCH TASKS (FIXED FOR MOBILE)
+  //     const taskRes = await fetch(
+  //       `${import.meta.env.VITE_API_URL}/api/tasks/${data.user._id}`,
+  //       {
+  //         headers: {
+  //           Authorization: data.token,
+  //         },
+  //       }
+  //     );
 
-      const tasks = await taskRes.json();
+  //     const tasks = await taskRes.json();
 
-      // 🔥 COMBINE USER + TASKS
-      const fullUser = {
-        ...data.user,
-        tasks,
-      };
+  //     // 🔥 COMBINE USER + TASKS
+  //     const fullUser = {
+  //       ...data.user,
+  //       tasks,
+  //     };
 
-      // 🔥 SAVE USER
-      setCurrentUser(fullUser);
-      localStorage.setItem("user", JSON.stringify(fullUser));
+  //     // 🔥 SAVE USER
+  //     setCurrentUser(fullUser);
+  //     localStorage.setItem("user", JSON.stringify(fullUser));
 
-      setLoading(false);
+  //     setLoading(false);
 
-      // 🔥 LOGIN SUCCESS
-      onLogin && onLogin();
+  //     // 🔥 LOGIN SUCCESS
+  //     onLogin && onLogin();
 
-    } catch (err) {
-      console.error(err);
-      setError("Server error");
-      setLoading(false);
-    }
-  };
+  //   } catch (err) {
+  //     console.error(err);
+  //     setError("Server error");
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <div className="w-full flex items-center justify-center">

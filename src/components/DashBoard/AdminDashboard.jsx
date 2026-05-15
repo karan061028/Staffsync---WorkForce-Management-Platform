@@ -120,7 +120,7 @@ const AdminDashboard = ({ changeUser }) => {
     }
 
     try {
-      await fetch("http://localhost:5000/api/tasks/create", {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/tasks/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -253,7 +253,7 @@ const AdminDashboard = ({ changeUser }) => {
                 <option value="">Select Employee</option>
                 {employees.map((emp) => (
                   <option key={emp._id} value={emp._id}>
-                    {emp.name}
+                    {emp.firstName}
                   </option>
                 ))}
               </select>

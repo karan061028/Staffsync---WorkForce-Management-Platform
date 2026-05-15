@@ -7,7 +7,6 @@ const FailedTask = ({ data }) => {
   const handleClick = () => {
     toast.error("Task marked as failed ❌");
   };
-
   return (
     <div className="p-5 rounded-xl bg-red-500/10 border border-red-500/20 backdrop-blur-lg relative">
 

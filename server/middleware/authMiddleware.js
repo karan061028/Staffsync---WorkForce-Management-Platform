@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 
+// 🔐 VERIFY TOKEN
 const protect = (req, res, next) => {
   try {
     const token = req.headers.authorization;
@@ -10,7 +11,7 @@ const protect = (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    req.user = decoded; // 🔥 contains id + role
+    req.user = decoded;
 
     next();
   } catch (error) {
@@ -26,4 +27,8 @@ const adminOnly = (req, res, next) => {
   next();
 };
 
-module.exports = { protect, adminOnly };
+// ✅ CORRECT EXPORT
+module.exports = {
+  protect,
+  adminOnly,
+};

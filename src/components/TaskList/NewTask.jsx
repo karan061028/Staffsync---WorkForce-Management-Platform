@@ -3,6 +3,11 @@ import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 
 const NewTask = ({ data, updateTask }) => {
+     const handleAccept = () => {
+    updateTask("active");
+    toast.success("Task Accepted 🚀");
+  };
+
   return (
     <div className="
       p-5 rounded-xl 
